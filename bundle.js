@@ -117,7 +117,6 @@ class Command {
 
 module.exports = Command;
 
-
 /***/ }),
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -152,7 +151,6 @@ class InvalidInstructionException extends Error {
 }
 
 module.exports = InvalidInstructionException;
-
 
 /***/ }),
 /* 3 */
@@ -725,31 +723,31 @@ var _assembly_simulator2 = _interopRequireDefault(_assembly_simulator);
 
 var _constants = __webpack_require__(5);
 
-var _helpers = __webpack_require__(47);
+var _helpers = __webpack_require__(48);
 
 var _helpers2 = _interopRequireDefault(_helpers);
 
-var _EditorComp = __webpack_require__(48);
+var _EditorComp = __webpack_require__(49);
 
 var _EditorComp2 = _interopRequireDefault(_EditorComp);
 
-var _Prints = __webpack_require__(51);
+var _Prints = __webpack_require__(52);
 
 var _Prints2 = _interopRequireDefault(_Prints);
 
-var _CustomTable = __webpack_require__(52);
+var _CustomTable = __webpack_require__(53);
 
 var _CustomTable2 = _interopRequireDefault(_CustomTable);
 
-var _LoadButton = __webpack_require__(53);
+var _LoadButton = __webpack_require__(54);
 
 var _LoadButton2 = _interopRequireDefault(_LoadButton);
 
-var _Stack = __webpack_require__(54);
+var _Stack = __webpack_require__(55);
 
 var _Stack2 = _interopRequireDefault(_Stack);
 
-__webpack_require__(55);
+__webpack_require__(56);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1117,10 +1115,9 @@ exports.default = MessageBox;
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Machine = __webpack_require__(15)
+const Machine = __webpack_require__(15);
 
 module.exports = Machine;
-
 
 /***/ }),
 /* 15 */
@@ -1132,9 +1129,10 @@ const Stack = __webpack_require__(43);
 const Lines = __webpack_require__(45);
 
 class Machine {
-  constructor() {
-    this.lines = new Lines();
+  constructor(maxLinesToExecute = 100) {
+    this.lines = new Lines(maxLinesToExecute);
     this.stack = new Stack();
+    this.maxLinesToExecute = maxLinesToExecute;
     this._reset();
   }
 
@@ -1155,7 +1153,7 @@ class Machine {
   }
 
   load(program) {
-    this.lines = new Lines();
+    this.lines = new Lines(this.maxLinesToExecute);
     let instructions = program.split(/\n/);
     instructions.forEach((instruction, index) => {
       let line;
@@ -1256,10 +1254,7 @@ class Machine {
     let regs = this.getRegs();
     let flags = this.getFlags();
     let stack = this.stack;
-    this.lines.execute(
-      { regs, flags, stack },
-      this._updateCurrentExecState.bind(this)
-    );
+    this.lines.execute({ regs, flags, stack }, this._updateCurrentExecState.bind(this));
   }
 
   nextStep() {
@@ -1278,15 +1273,11 @@ class Machine {
     let regs = this.getRegs();
     let flags = this.getFlags();
     let stack = this.stack;
-    this._stepWiseExecutor = this.lines.getStepWiseExecutor(
-      { regs, flags, stack },
-      wrappedCb
-    );
+    this._stepWiseExecutor = this.lines.getStepWiseExecutor({ regs, flags, stack }, wrappedCb);
   }
 }
 
 module.exports = Machine;
-
 
 /***/ }),
 /* 16 */
@@ -1298,11 +1289,7 @@ function isNonExecutable(instruction) {
   let empty = /^\s*$/;
   let onlyNumber = /^\s*([0-9]+)+\s*$/;
   let comment = /^\s*;.*$/;
-  return (
-    instruction.match(empty) ||
-    instruction.match(comment) ||
-    instruction.match(onlyNumber)
-  );
+  return instruction.match(empty) || instruction.match(comment) || instruction.match(onlyNumber);
 }
 
 const parse = instruction => {
@@ -1331,7 +1318,6 @@ const parseArgs = args => {
 };
 
 module.exports = parse;
-
 
 /***/ }),
 /* 17 */
@@ -1384,7 +1370,6 @@ lib.create = (lineNumber, command, args, srcLine, instruction) => {
 
 module.exports = lib;
 
-
 /***/ }),
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -1419,8 +1404,7 @@ const Ret = __webpack_require__(42);
 const isRegister = arg => arg.toString().match(/^[ABCD]$/i);
 const isNumericalValue = arg => arg.toString().match(/^[0-9]+$/i);
 const isStringLiteral = arg => arg.toString().match(/^".*"$/);
-const isValidFunctionName = arg =>
-  arg.toString().match(/^[a-zA-Z][a-zA-Z0-9]+$/);
+const isValidFunctionName = arg => arg.toString().match(/^[a-zA-Z][a-zA-Z0-9]+$/);
 const stripOuterQuotes = arg => arg.replace(/^"/, '').replace(/"$/, '');
 const factories = {};
 
@@ -1431,8 +1415,7 @@ factories.stop = args => new Stop();
 factories.mov = args => {
   if (!isRegister(args[0])) throw new InvalidInstructionException();
 
-  if (isRegister(args[1]))
-    return new MovRegToReg(args[0].toUpperCase(), args[1].toUpperCase());
+  if (isRegister(args[1])) return new MovRegToReg(args[0].toUpperCase(), args[1].toUpperCase());
 
   if (!isNumericalValue(args[1])) throw new InvalidInstructionException();
 
@@ -1442,8 +1425,7 @@ factories.mov = args => {
 factories.cmp = args => {
   if (!isRegister(args[0])) throw new InvalidInstructionException();
 
-  if (isRegister(args[1]))
-    return new CmpRegToReg(args[0].toUpperCase(), args[1].toUpperCase());
+  if (isRegister(args[1])) return new CmpRegToReg(args[0].toUpperCase(), args[1].toUpperCase());
 
   if (!isNumericalValue(args[1])) throw new InvalidInstructionException();
 
@@ -1451,8 +1433,7 @@ factories.cmp = args => {
 };
 
 factories.jmp = (args, actualJump = Jmp) => {
-  if (args.length != 1 || !isNumericalValue(args[0]))
-    throw new InvalidInstructionException();
+  if (args.length != 1 || !isNumericalValue(args[0])) throw new InvalidInstructionException();
   return new actualJump(args[0]);
 };
 
@@ -1483,8 +1464,7 @@ factories.jge = args => {
 factories.add = args => {
   if (!isRegister(args[0])) throw new InvalidInstructionException();
 
-  if (isRegister(args[1]))
-    return new AddRegToReg(args[0].toUpperCase(), args[1].toUpperCase());
+  if (isRegister(args[1])) return new AddRegToReg(args[0].toUpperCase(), args[1].toUpperCase());
 
   if (!isNumericalValue(args[1])) throw new InvalidInstructionException();
 
@@ -1494,8 +1474,7 @@ factories.add = args => {
 factories.sub = args => {
   if (!isRegister(args[0])) throw new InvalidInstructionException();
 
-  if (isRegister(args[1]))
-    return new SubRegFromReg(args[0].toUpperCase(), args[1].toUpperCase());
+  if (isRegister(args[1])) return new SubRegFromReg(args[0].toUpperCase(), args[1].toUpperCase());
 
   if (!isNumericalValue(args[1])) throw new InvalidInstructionException();
 
@@ -1515,29 +1494,25 @@ factories.prn = args => {
 };
 
 factories.push = args => {
-  if (args.length != 1 || !isRegister(args[0]))
-    throw new InvalidInstructionException();
+  if (args.length != 1 || !isRegister(args[0])) throw new InvalidInstructionException();
 
   return new Push(args[0].toUpperCase());
 };
 
 factories.pop = args => {
-  if (args.length != 1 || !isRegister(args[0]))
-    throw new InvalidInstructionException();
+  if (args.length != 1 || !isRegister(args[0])) throw new InvalidInstructionException();
 
   return new Pop(args[0].toUpperCase());
 };
 
 factories.func = args => {
-  if (args.length != 1 || !isValidFunctionName(args[0]))
-    throw new InvalidInstructionException();
+  if (args.length != 1 || !isValidFunctionName(args[0])) throw new InvalidInstructionException();
 
   return new Func(args[0].toUpperCase());
 };
 
 factories.call = args => {
-  if (args.length != 1 || !isValidFunctionName(args[0]))
-    throw new InvalidInstructionException();
+  if (args.length != 1 || !isValidFunctionName(args[0])) throw new InvalidInstructionException();
 
   return new Call(args[0].toUpperCase());
 };
@@ -1549,7 +1524,6 @@ factories.ret = args => {
 };
 
 module.exports = factories;
-
 
 /***/ }),
 /* 19 */
@@ -1567,7 +1541,6 @@ class Start extends Command {
 
 module.exports = Start;
 
-
 /***/ }),
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -1582,7 +1555,6 @@ class Stop extends Command {
 }
 
 module.exports = Stop;
-
 
 /***/ }),
 /* 21 */
@@ -1607,7 +1579,6 @@ class MovValToReg extends Command {
 
 module.exports = MovValToReg;
 
-
 /***/ }),
 /* 22 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -1630,7 +1601,6 @@ class MovRegToReg extends Command {
 }
 
 module.exports = MovRegToReg;
-
 
 /***/ }),
 /* 23 */
@@ -1655,7 +1625,6 @@ class AddValToReg extends Command {
 
 module.exports = AddValToReg;
 
-
 /***/ }),
 /* 24 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -1678,7 +1647,6 @@ class AddRegToReg extends Command {
 }
 
 module.exports = AddRegToReg;
-
 
 /***/ }),
 /* 25 */
@@ -1703,7 +1671,6 @@ class SubValFromReg extends Command {
 
 module.exports = SubValFromReg;
 
-
 /***/ }),
 /* 26 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -1726,7 +1693,6 @@ class SubRegFromReg extends Command {
 }
 
 module.exports = SubRegFromReg;
-
 
 /***/ }),
 /* 27 */
@@ -1759,7 +1725,6 @@ class CmpRegToVal extends Command {
 }
 
 module.exports = CmpRegToVal;
-
 
 /***/ }),
 /* 28 */
@@ -1794,7 +1759,6 @@ class CmpRegToReg extends Command {
 
 module.exports = CmpRegToReg;
 
-
 /***/ }),
 /* 29 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -1814,7 +1778,6 @@ class Jmp extends Command {
 }
 
 module.exports = Jmp;
-
 
 /***/ }),
 /* 30 */
@@ -1837,7 +1800,6 @@ class JmpEq extends Command {
 
 module.exports = JmpEq;
 
-
 /***/ }),
 /* 31 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -1859,7 +1821,6 @@ class JmpNe extends Command {
 
 module.exports = JmpNe;
 
-
 /***/ }),
 /* 32 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -1880,7 +1841,6 @@ class JmpLt extends Command {
 }
 
 module.exports = JmpLt;
-
 
 /***/ }),
 /* 33 */
@@ -1905,7 +1865,6 @@ class JmpLe extends Command {
 
 module.exports = JmpLe;
 
-
 /***/ }),
 /* 34 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -1926,7 +1885,6 @@ class JmpGt extends Command {
 }
 
 module.exports = JmpGt;
-
 
 /***/ }),
 /* 35 */
@@ -1951,7 +1909,6 @@ class JmpGe extends Command {
 
 module.exports = JmpGe;
 
-
 /***/ }),
 /* 36 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -1970,7 +1927,6 @@ class PrnLiteral extends Command {
 }
 
 module.exports = PrnLiteral;
-
 
 /***/ }),
 /* 37 */
@@ -1991,7 +1947,6 @@ class PrnReg extends Command {
 }
 
 module.exports = PrnReg;
-
 
 /***/ }),
 /* 38 */
@@ -2028,7 +1983,6 @@ class Push extends Command {
 }
 
 module.exports = Push;
-
 
 /***/ }),
 /* 39 */
@@ -2067,7 +2021,6 @@ class Pop extends Command {
 
 module.exports = Pop;
 
-
 /***/ }),
 /* 40 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -2101,7 +2054,6 @@ class Func extends Command {
 }
 
 module.exports = Func;
-
 
 /***/ }),
 /* 41 */
@@ -2141,7 +2093,6 @@ class Call extends Command {
 
 module.exports = Call;
 
-
 /***/ }),
 /* 42 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -2157,7 +2108,6 @@ class Ret extends Command {
 }
 
 module.exports = Ret;
-
 
 /***/ }),
 /* 43 */
@@ -2209,7 +2159,6 @@ class Stack {
 
 module.exports = Stack;
 
-
 /***/ }),
 /* 44 */
 /***/ (function(module, exports) {
@@ -2233,15 +2182,16 @@ class StackUnderflowException extends Error {
 
 module.exports = StackUnderflowException;
 
-
 /***/ }),
 /* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const ProgramCounter = __webpack_require__(46);
+const MaxInstructionsExceededException = __webpack_require__(46);
+const ProgramCounter = __webpack_require__(47);
 
 class Lines {
-  constructor() {
+  constructor(maxLinesToExecute) {
+    this.maxLinesToExecute = maxLinesToExecute;
     this.lines = [];
     this.fnTable = {};
   }
@@ -2256,9 +2206,14 @@ class Lines {
     let state = { regs, flags, halt: false };
     let lineNumbers = this.lines.map(l => l.getLineNumber());
     let programCounter = new ProgramCounter(lineNumbers, this.fnTable);
+    let numberOfLinesExecuted = 0;
     let executor = () => {
       let line = this.lines[programCounter.getCurrentLineIndex()];
       state = line.execute(state.regs, state.flags, stack, programCounter);
+      numberOfLinesExecuted++;
+      if (numberOfLinesExecuted > this.maxLinesToExecute) {
+        throw new MaxInstructionsExceededException(this.maxLinesToExecute);
+      }
       state.nextLine = programCounter.getNextLineNumber();
       programCounter.update();
       cb(state);
@@ -2275,9 +2230,22 @@ class Lines {
 
 module.exports = Lines;
 
-
 /***/ }),
 /* 46 */
+/***/ (function(module, exports) {
+
+class MaxInstructionsExceededException extends Error {
+  constructor(maxLinesToExecute) {
+    super();
+    this.name = this.constructor.name;
+    this.maxLinesToExecute = maxLinesToExecute;
+  }
+}
+
+module.exports = MaxInstructionsExceededException;
+
+/***/ }),
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 const InvalidInstructionException = __webpack_require__(2);
@@ -2379,19 +2347,14 @@ class ProgramCounter {
    * @returns {boolean}
    */
   shouldHalt() {
-    return (
-      this._halt ||
-      this._currentIndex == undefined ||
-      this._currentIndex >= this._lineNumbers.length
-    );
+    return this._halt || this._currentIndex == undefined || this._currentIndex >= this._lineNumbers.length;
   }
 }
 
 module.exports = ProgramCounter;
 
-
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2418,7 +2381,7 @@ var replaceInString = function replaceInString(string, toBeReplaced, replaceWith
 exports.default = { getColumns: getColumns, compareState: compareState, replaceInString: replaceInString };
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2434,7 +2397,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactCodemirror = __webpack_require__(49);
+var _reactCodemirror = __webpack_require__(50);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2489,7 +2452,7 @@ var EditorComp = function (_React$Component) {
 exports.default = EditorComp;
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2540,7 +2503,7 @@ var React = __webpack_require__(1);
 var SERVER_RENDERED = typeof navigator === 'undefined' || global['PREVENT_CODEMIRROR_RENDER'] === true;
 var cm;
 if (!SERVER_RENDERED) {
-  cm = __webpack_require__(50);
+  cm = __webpack_require__(51);
 }
 var Helper = function() {
   function Helper() {}
@@ -3138,7 +3101,7 @@ exports.UnControlled = UnControlled;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(4)))
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -12905,7 +12868,7 @@ exports.UnControlled = UnControlled;
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12965,7 +12928,7 @@ var Prints = function (_React$Component) {
 exports.default = Prints;
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13051,7 +13014,7 @@ exports.default = function (props) {
 };
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13139,7 +13102,7 @@ var LoadButton = function (_Component) {
 exports.default = LoadButton;
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13224,7 +13187,7 @@ var Stack = function (_Component) {
 exports.default = Stack;
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
