@@ -840,7 +840,7 @@ var App = function (_Component) {
           _react2.default.createElement(
             'div',
             { className: 'code-container' },
-            _react2.default.createElement(_EditorComp2.default, { initialCode: this.state.editor, highlightLine: this.state.highlightLine,
+            _react2.default.createElement(_EditorComp2.default, { initialCode: this.getInitialCode(), highlightLine: this.state.highlightLine,
               highlightingClass: this.state.highlightingClass, onEdit: this.handleCodeEdit }),
             _react2.default.createElement(
               'div',
@@ -907,7 +907,6 @@ var App = function (_Component) {
     key: 'handleCodeEdit',
     value: function handleCodeEdit(editor) {
       this.setState({ editor: editor });
-      this.saveCurrentCode();
       this.clearState();
       this.setAsNotExecutingStepWise();
     }
