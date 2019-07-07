@@ -713,6 +713,8 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _constants = __webpack_require__(5);
+
 var _MessageBox = __webpack_require__(13);
 
 var _MessageBox2 = _interopRequireDefault(_MessageBox);
@@ -720,8 +722,6 @@ var _MessageBox2 = _interopRequireDefault(_MessageBox);
 var _assembly_simulator = __webpack_require__(14);
 
 var _assembly_simulator2 = _interopRequireDefault(_assembly_simulator);
-
-var _constants = __webpack_require__(5);
 
 var _helpers = __webpack_require__(48);
 
@@ -747,7 +747,9 @@ var _Stack = __webpack_require__(55);
 
 var _Stack2 = _interopRequireDefault(_Stack);
 
-__webpack_require__(56);
+var _SaveCodeDialogueBox = __webpack_require__(56);
+
+var _SaveCodeDialogueBox2 = _interopRequireDefault(_SaveCodeDialogueBox);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -779,7 +781,8 @@ var App = function (_Component) {
       highlightLine: 0,
       highlightingClass: _constants.highlightingClass,
       isSidebarOpen: false,
-      codeStatus: successStatus
+      codeStatus: successStatus,
+      isDialogueVisible: false
     };
     _this.executeCode = _this.executeCode.bind(_this);
     _this.executeStepWise = _this.executeStepWise.bind(_this);
@@ -791,96 +794,105 @@ var App = function (_Component) {
     _this.setHasChangedPropertyForChangedRows = _this.setHasChangedPropertyForChangedRows.bind(_this);
     _this.openMenu = _this.openMenu.bind(_this);
     _this.saveCurrentCode = _this.saveCurrentCode.bind(_this);
+    _this.toggleSaveCodeDialogue = _this.toggleSaveCodeDialogue.bind(_this);
     return _this;
   }
 
   _createClass(App, [{
-    key: 'openMenu',
+    key: "openMenu",
     value: function openMenu() {
       this.setState({ isSidebarOpen: !this.state.isSidebarOpen });
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       var sidebarClassName = this.state.isSidebarOpen ? 'active' : '';
       return _react2.default.createElement(
-        'div',
-        { className: 'app' },
+        "div",
+        { className: "app" },
         _react2.default.createElement(
-          'div',
-          { className: 'assembly-simulator-container' },
+          "div",
+          { className: "assembly-simulator-container" },
           _react2.default.createElement(
-            'div',
-            { className: 'assembly-simulator-header' },
+            "div",
+            { className: "assembly-simulator-header" },
             _react2.default.createElement(
-              'div',
-              { className: 'header-title-action' },
+              "div",
+              { className: "header-title-action" },
               _react2.default.createElement(
-                'span',
-                { className: 'menu ' + sidebarClassName, onClick: this.openMenu },
-                '...'
+                "span",
+                { className: "menu " + sidebarClassName, onClick: this.openMenu },
+                "..."
               ),
               _react2.default.createElement(
-                'span',
-                { className: 'title' },
-                'Assembly Simulator'
+                "span",
+                { className: "title" },
+                "Assembly Simulator"
               )
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'save-load-container' },
+              "div",
+              { className: "save-load-container" },
               _react2.default.createElement(
-                'a',
-                { className: 'link-action', download: 'code.txt', href: "data:text/plain," + this.state.editor },
-                'Save'
+                "button",
+                { className: "save-button", onClick: this.toggleSaveCodeDialogue },
+                "Save"
               ),
-              _react2.default.createElement(_LoadButton2.default, { className: 'link-action', handleCodeEdit: this.handleCodeEdit })
+              _react2.default.createElement(_LoadButton2.default, { className: "link-action", handleCodeEdit: this.handleCodeEdit })
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'code-container' },
+            "div",
+            { className: "code-container" },
             _react2.default.createElement(_EditorComp2.default, { initialCode: this.getInitialCode(), highlightLine: this.state.highlightLine,
               highlightingClass: this.state.highlightingClass, onEdit: this.handleCodeEdit }),
             _react2.default.createElement(
-              'div',
-              { className: 'actions' },
+              "div",
+              { className: "actions" },
               _react2.default.createElement(
-                'button',
+                "button",
                 { onClick: this.executeStepWise, disabled: this.state.isExecutingStepWise },
-                'Step Into'
+                "Step Into"
               ),
               _react2.default.createElement(
-                'button',
+                "button",
                 { onClick: this.executeCode },
-                'Run'
+                "Run"
               ),
               _react2.default.createElement(
-                'button',
+                "button",
                 { onClick: this.executeNextLine, disabled: !this.state.isExecutingStepWise },
-                'Next'
+                "Next"
               )
             ),
+            _react2.default.createElement("div", null),
             _react2.default.createElement(_MessageBox2.default, { message: this.state.message, className: this.state.codeStatus })
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'output-container' },
+            "div",
+            { className: "output-container" },
             _react2.default.createElement(_Prints2.default, { prints: this.state.prints })
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'trace-table' },
-            _react2.default.createElement(_CustomTable2.default, { rows: this.state.registerTable, headers: _helpers2.default.getColumns(), className: 'registerTable',
+            "div",
+            { className: "trace-table" },
+            _react2.default.createElement(_CustomTable2.default, { rows: this.state.registerTable, headers: _helpers2.default.getColumns(), className: "registerTable",
               onClickOfHeader: this.setHasChangedPropertyForChangedRows,
               onClickOfRow: this.showStackForLine }),
             _react2.default.createElement(_Stack2.default, { stack: this.state.stack })
-          )
+          ),
+          _react2.default.createElement(_SaveCodeDialogueBox2.default, { display: this.state.isDialogueVisible, toggleDisplay: this.toggleSaveCodeDialogue, editor: this.state.editor })
         )
       );
     }
   }, {
-    key: 'saveCurrentCode',
+    key: "toggleSaveCodeDialogue",
+    value: function toggleSaveCodeDialogue() {
+      var display = !this.state.isDialogueVisible;
+      this.setState({ isDialogueVisible: display });
+    }
+  }, {
+    key: "saveCurrentCode",
     value: function saveCurrentCode() {
       var editor = this.state.editor;
       editor = _helpers2.default.replaceInString(editor, "\n", "{{{{,}}}}");
@@ -888,7 +900,7 @@ var App = function (_Component) {
       document.cookie = "assemblyCode=" + editor;
     }
   }, {
-    key: 'getInitialCode',
+    key: "getInitialCode",
     value: function getInitialCode() {
       window.onbeforeunload = this.saveCurrentCode;
       var cookies = document.cookie.split(';').filter(function (item) {
@@ -904,14 +916,14 @@ var App = function (_Component) {
       return savedCode || _constants.INITIALCODE;
     }
   }, {
-    key: 'handleCodeEdit',
+    key: "handleCodeEdit",
     value: function handleCodeEdit(editor) {
       this.setState({ editor: editor });
       this.clearState();
       this.setAsNotExecutingStepWise();
     }
   }, {
-    key: 'setHasChangedPropertyForChangedRows',
+    key: "setHasChangedPropertyForChangedRows",
     value: function setHasChangedPropertyForChangedRows(event) {
       var _this2 = this;
 
@@ -929,18 +941,18 @@ var App = function (_Component) {
       });
     }
   }, {
-    key: 'setHasChangedAs',
+    key: "setHasChangedAs",
     value: function setHasChangedAs(rowIndex, state) {
       var registerTable = this.state.registerTable;
       registerTable[rowIndex].hasChanged = state;
       this.setState({ registerTable: registerTable });
     }
   }, {
-    key: 'executeCode',
+    key: "executeCode",
     value: function executeCode() {
       var lines = this.state.editor.split(/\n/);
       var numberedCode = lines.map(function (l, i) {
-        return (i + 1) * 10 + ' ' + l.trim();
+        return (i + 1) * 10 + " " + l.trim();
       }).join("\n");
       var machine = this.state.machine;
       try {
@@ -960,11 +972,11 @@ var App = function (_Component) {
       }
     }
   }, {
-    key: 'executeStepWise',
+    key: "executeStepWise",
     value: function executeStepWise() {
       var lines = this.state.editor.split(/\n/);
       var numberedCode = lines.map(function (l, i) {
-        return (i + 1) * 10 + ' ' + l.trim();
+        return (i + 1) * 10 + " " + l.trim();
       }).join("\n");
       var machine = this.state.machine;
       try {
@@ -977,7 +989,7 @@ var App = function (_Component) {
       }
     }
   }, {
-    key: 'clearState',
+    key: "clearState",
     value: function clearState() {
       this.setState({
         registerTable: [], prints: [], stack: [],
@@ -986,22 +998,22 @@ var App = function (_Component) {
       });
     }
   }, {
-    key: 'executeNextLine',
+    key: "executeNextLine",
     value: function executeNextLine() {
       this.state.machine.nextStep();
     }
   }, {
-    key: 'setAsNotExecutingStepWise',
+    key: "setAsNotExecutingStepWise",
     value: function setAsNotExecutingStepWise() {
       this.setState({ isExecutingStepWise: false });
     }
   }, {
-    key: 'setAsExecutingStepWise',
+    key: "setAsExecutingStepWise",
     value: function setAsExecutingStepWise() {
       this.setState({ isExecutingStepWise: true });
     }
   }, {
-    key: 'updateRegisterAndStack',
+    key: "updateRegisterAndStack",
     value: function updateRegisterAndStack(state) {
       var A = state.A,
           B = state.B,
@@ -1025,7 +1037,7 @@ var App = function (_Component) {
       this.setState({ registerTable: registerTable, prints: prints, stack: STK });
     }
   }, {
-    key: 'showStackForLine',
+    key: "showStackForLine",
     value: function showStackForLine(clickedRow) {
       this.setState({ stack: clickedRow.STK });
       var registerTable = this.state.registerTable;
@@ -1035,9 +1047,9 @@ var App = function (_Component) {
       this.setState({ registerTable: registerTable, highlightLine: clickedRow.SL });
     }
   }, {
-    key: 'setError',
+    key: "setError",
     value: function setError(error) {
-      var message = error + ' at ' + error.lineNumber;
+      var message = error + " at " + error.lineNumber;
       var highlightLine = error.lineNumber;
 
       if (error.name == "MaxInstructionsExceededException") {
@@ -2207,6 +2219,7 @@ class Lines {
     let programCounter = new ProgramCounter(lineNumbers, this.fnTable);
     let numberOfLinesExecuted = 0;
     let executor = () => {
+      if (this.hasNoLines()) return false;
       let line = this.lines[programCounter.getCurrentLineIndex()];
       state = line.execute(state.regs, state.flags, stack, programCounter);
       numberOfLinesExecuted++;
@@ -2219,6 +2232,10 @@ class Lines {
       return !programCounter.shouldHalt();
     };
     return executor;
+  }
+
+  hasNoLines() {
+    return this.lines.length == 0;
   }
 
   execute(initState, cb) {
@@ -13187,6 +13204,96 @@ exports.default = Stack;
 
 /***/ }),
 /* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+__webpack_require__(57);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SaveDialogueBox = function (_Component) {
+  _inherits(SaveDialogueBox, _Component);
+
+  function SaveDialogueBox(props) {
+    _classCallCheck(this, SaveDialogueBox);
+
+    var _this = _possibleConstructorReturn(this, (SaveDialogueBox.__proto__ || Object.getPrototypeOf(SaveDialogueBox)).call(this, props));
+
+    _this.props = props;
+    _this.state = { fileName: "" };
+    _this.updateInputValue = _this.updateInputValue.bind(_this);
+    _this.getDisplay = _this.getDisplay.bind(_this);
+    return _this;
+  }
+
+  _createClass(SaveDialogueBox, [{
+    key: "render",
+    value: function render() {
+      console.log(this.props.display);
+      return _react2.default.createElement(
+        "div",
+        { className: "save-code-overlay", style: { display: this.getDisplay() } },
+        _react2.default.createElement(
+          "button",
+          { className: "save-button save-dialogue-box-close-button", onClick: this.props.toggleDisplay },
+          "x"
+        ),
+        _react2.default.createElement("input", {
+          className: "filename-input",
+          value: this.state.fileName,
+          onChange: this.updateInputValue
+        }),
+        _react2.default.createElement(
+          "a",
+          {
+            className: "link-action",
+            download: this.state.fileName + ".txt",
+            href: "data:text/plain," + this.props.editor,
+            onClick: this.props.toggleDisplay
+          },
+          "Save"
+        )
+      );
+    }
+  }, {
+    key: "getDisplay",
+    value: function getDisplay() {
+      return this.props.display ? "flex" : "none";
+    }
+  }, {
+    key: "updateInputValue",
+    value: function updateInputValue(evt) {
+      this.setState({
+        fileName: evt.target.value
+      });
+    }
+  }]);
+
+  return SaveDialogueBox;
+}(_react.Component);
+
+exports.default = SaveDialogueBox;
+
+/***/ }),
+/* 57 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
