@@ -131,6 +131,22 @@ if (true) {
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var INITIALMESSAGE = exports.INITIALMESSAGE = "Code seems fine",
+    INITIALCODE = exports.INITIALCODE = "START\nPRN \"HELLO\"\nSTOP",
+    highlightingClass = exports.highlightingClass = 'lineToHighlight',
+    highlightErrorClass = exports.highlightErrorClass = "errorLine",
+    DUNSTON_FILE_EXTENSION = exports.DUNSTON_FILE_EXTENSION = ".dtn";
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports) {
 
 class InvalidInstructionException extends Error {
@@ -153,7 +169,7 @@ class InvalidInstructionException extends Error {
 module.exports = InvalidInstructionException;
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -250,7 +266,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports) {
 
 var g;
@@ -274,21 +290,6 @@ try {
 
 module.exports = g;
 
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var INITIALMESSAGE = exports.INITIALMESSAGE = "Code seems fine",
-    INITIALCODE = exports.INITIALCODE = "START\nPRN \"HELLO\"\nSTOP",
-    highlightingClass = exports.highlightingClass = 'lineToHighlight',
-    highlightErrorClass = exports.highlightErrorClass = "errorLine";
 
 /***/ }),
 /* 6 */
@@ -327,7 +328,7 @@ _reactDom2.default.render(_react2.default.createElement(_App2.default, null), do
  * LICENSE file in the root directory of this source tree.
  */
 
-var k=__webpack_require__(3),n="function"===typeof Symbol&&Symbol.for,p=n?Symbol.for("react.element"):60103,q=n?Symbol.for("react.portal"):60106,r=n?Symbol.for("react.fragment"):60107,t=n?Symbol.for("react.strict_mode"):60108,u=n?Symbol.for("react.profiler"):60114,v=n?Symbol.for("react.provider"):60109,w=n?Symbol.for("react.context"):60110,x=n?Symbol.for("react.concurrent_mode"):60111,y=n?Symbol.for("react.forward_ref"):60112,z=n?Symbol.for("react.suspense"):60113,aa=n?Symbol.for("react.memo"):
+var k=__webpack_require__(4),n="function"===typeof Symbol&&Symbol.for,p=n?Symbol.for("react.element"):60103,q=n?Symbol.for("react.portal"):60106,r=n?Symbol.for("react.fragment"):60107,t=n?Symbol.for("react.strict_mode"):60108,u=n?Symbol.for("react.profiler"):60114,v=n?Symbol.for("react.provider"):60109,w=n?Symbol.for("react.context"):60110,x=n?Symbol.for("react.concurrent_mode"):60111,y=n?Symbol.for("react.forward_ref"):60112,z=n?Symbol.for("react.suspense"):60113,aa=n?Symbol.for("react.memo"):
 60115,ba=n?Symbol.for("react.lazy"):60116,A="function"===typeof Symbol&&Symbol.iterator;function ca(a,b,d,c,e,g,h,f){if(!a){a=void 0;if(void 0===b)a=Error("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");else{var l=[d,c,e,g,h,f],m=0;a=Error(b.replace(/%s/g,function(){return l[m++]}));a.name="Invariant Violation"}a.framesToPop=1;throw a;}}
 function B(a){for(var b=arguments.length-1,d="https://reactjs.org/docs/error-decoder.html?invariant="+a,c=0;c<b;c++)d+="&args[]="+encodeURIComponent(arguments[c+1]);ca(!1,"Minified React error #"+a+"; visit %s for the full message or use the non-minified dev environment for full errors and additional helpful warnings. ",d)}var C={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}},D={};
 function E(a,b,d){this.props=a;this.context=b;this.refs=D;this.updater=d||C}E.prototype.isReactComponent={};E.prototype.setState=function(a,b){"object"!==typeof a&&"function"!==typeof a&&null!=a?B("85"):void 0;this.updater.enqueueSetState(this,a,b,"setState")};E.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};function F(){}F.prototype=E.prototype;function G(a,b,d){this.props=a;this.context=b;this.refs=D;this.updater=d||C}var H=G.prototype=new F;
@@ -396,7 +397,7 @@ if (true) {
 /*
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var aa=__webpack_require__(1),n=__webpack_require__(3),r=__webpack_require__(10);function ba(a,b,c,d,e,f,g,h){if(!a){a=void 0;if(void 0===b)a=Error("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");else{var l=[c,d,e,f,g,h],k=0;a=Error(b.replace(/%s/g,function(){return l[k++]}));a.name="Invariant Violation"}a.framesToPop=1;throw a;}}
+var aa=__webpack_require__(1),n=__webpack_require__(4),r=__webpack_require__(10);function ba(a,b,c,d,e,f,g,h){if(!a){a=void 0;if(void 0===b)a=Error("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");else{var l=[c,d,e,f,g,h],k=0;a=Error(b.replace(/%s/g,function(){return l[k++]}));a.name="Invariant Violation"}a.framesToPop=1;throw a;}}
 function x(a){for(var b=arguments.length-1,c="https://reactjs.org/docs/error-decoder.html?invariant="+a,d=0;d<b;d++)c+="&args[]="+encodeURIComponent(arguments[d+1]);ba(!1,"Minified React error #"+a+"; visit %s for the full message or use the non-minified dev environment for full errors and additional helpful warnings. ",c)}aa?void 0:x("227");function ca(a,b,c,d,e,f,g,h,l){var k=Array.prototype.slice.call(arguments,3);try{b.apply(c,k)}catch(m){this.onError(m)}}
 var da=!1,ea=null,fa=!1,ha=null,ia={onError:function(a){da=!0;ea=a}};function ja(a,b,c,d,e,f,g,h,l){da=!1;ea=null;ca.apply(ia,arguments)}function ka(a,b,c,d,e,f,g,h,l){ja.apply(this,arguments);if(da){if(da){var k=ea;da=!1;ea=null}else x("198"),k=void 0;fa||(fa=!0,ha=k)}}var la=null,ma={};
 function na(){if(la)for(var a in ma){var b=ma[a],c=la.indexOf(a);-1<c?void 0:x("96",a);if(!oa[c]){b.extractEvents?void 0:x("97",a);oa[c]=b;c=b.eventTypes;for(var d in c){var e=void 0;var f=c[d],g=b,h=d;pa.hasOwnProperty(h)?x("99",h):void 0;pa[h]=f;var l=f.phasedRegistrationNames;if(l){for(e in l)l.hasOwnProperty(e)&&qa(l[e],g,h);e=!0}else f.registrationName?(qa(f.registrationName,g,h),e=!0):e=!1;e?void 0:x("98",d,a)}}}}
@@ -694,7 +695,7 @@ exports.unstable_scheduleCallback=function(a,b){var c=-1!==k?k:exports.unstable_
 b=c.previous;b.next=c.previous=a;a.next=c;a.previous=b}return a};exports.unstable_cancelCallback=function(a){var b=a.next;if(null!==b){if(b===a)d=null;else{a===d&&(d=b);var c=a.previous;c.next=b;b.previous=c}a.next=a.previous=null}};exports.unstable_wrapCallback=function(a){var b=g;return function(){var c=g,f=k;g=b;k=exports.unstable_now();try{return a.apply(this,arguments)}finally{g=c,k=f,v()}}};exports.unstable_getCurrentPriorityLevel=function(){return g};
 exports.unstable_shouldYield=function(){return!e&&(null!==d&&d.expirationTime<l||w())};exports.unstable_continueExecution=function(){null!==d&&p()};exports.unstable_pauseExecution=function(){};exports.unstable_getFirstCallbackNode=function(){return d};
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(4)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5)))
 
 /***/ }),
 /* 12 */
@@ -713,7 +714,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _constants = __webpack_require__(5);
+var _constants = __webpack_require__(2);
 
 var _MessageBox = __webpack_require__(13);
 
@@ -799,6 +800,7 @@ var App = function (_Component) {
     _this.setHasChangedPropertyForChangedRows = _this.setHasChangedPropertyForChangedRows.bind(_this);
     _this.openMenu = _this.openMenu.bind(_this);
     _this.saveCurrentCode = _this.saveCurrentCode.bind(_this);
+    _this.loadCode = _this.loadCode.bind(_this);
 
     _this.maxLinesToExecuteSliderRef = _react2.default.createRef();
     _this.toggleSaveCodeDialogue = _this.toggleSaveCodeDialogue.bind(_this);
@@ -845,7 +847,7 @@ var App = function (_Component) {
                 { className: "save-button", onClick: this.toggleSaveCodeDialogue },
                 "Save"
               ),
-              _react2.default.createElement(_LoadButton2.default, { className: "link-action", handleCodeEdit: this.handleCodeEdit })
+              _react2.default.createElement(_LoadButton2.default, { className: "link-action", loadCode: this.loadCode })
             )
           ),
           _react2.default.createElement(
@@ -894,6 +896,19 @@ var App = function (_Component) {
       );
     }
   }, {
+    key: "persistCode",
+    value: function persistCode(code) {
+      var editor = _helpers2.default.replaceInString(code, "\n", "{{{{,}}}}");
+      editor = _helpers2.default.replaceInString(editor, ";", "{{{{:}}}}");
+      document.cookie = "assemblyCode=" + editor;
+    }
+  }, {
+    key: "loadCode",
+    value: function loadCode(code) {
+      this.persistCode(code);
+      this.handleCodeEdit(code);
+    }
+  }, {
     key: "toggleSaveCodeDialogue",
     value: function toggleSaveCodeDialogue() {
       var display = !this.state.isDialogueVisible;
@@ -903,9 +918,7 @@ var App = function (_Component) {
     key: "saveCurrentCode",
     value: function saveCurrentCode() {
       var editor = this.state.editor;
-      editor = _helpers2.default.replaceInString(editor, "\n", "{{{{,}}}}");
-      editor = _helpers2.default.replaceInString(editor, ";", "{{{{:}}}}");
-      document.cookie = "assemblyCode=" + editor;
+      this.persistCode(editor);
     }
   }, {
     key: "getInitialCode",
@@ -1307,7 +1320,7 @@ module.exports = Machine;
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const InvalidInstructionException = __webpack_require__(2);
+const InvalidInstructionException = __webpack_require__(3);
 
 function isNonExecutable(instruction) {
   let empty = /^\s*$/;
@@ -1348,7 +1361,7 @@ module.exports = parse;
 /***/ (function(module, exports, __webpack_require__) {
 
 const factories = __webpack_require__(18);
-const InvalidInstructionException = __webpack_require__(2);
+const InvalidInstructionException = __webpack_require__(3);
 const lib = {};
 
 class Line {
@@ -1398,7 +1411,7 @@ module.exports = lib;
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const InvalidInstructionException = __webpack_require__(2);
+const InvalidInstructionException = __webpack_require__(3);
 
 const Start = __webpack_require__(19);
 const Stop = __webpack_require__(20);
@@ -2277,7 +2290,7 @@ module.exports = MaxInstructionsExceededException;
 /* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const InvalidInstructionException = __webpack_require__(2);
+const InvalidInstructionException = __webpack_require__(3);
 /**
  * Creates a reverse lookup of the index. This is used as a reducer function to create a lookup of line numbers to index.
  * @param {Object} obj
@@ -3127,7 +3140,7 @@ var UnControlled = function(_super) {
   return UnControlled;
 }(React.Component);
 exports.UnControlled = UnControlled;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(4)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(5)))
 
 /***/ }),
 /* 51 */
@@ -12971,7 +12984,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _constants = __webpack_require__(5);
+var _constants = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -13050,7 +13063,7 @@ exports.default = function (props) {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -13058,6 +13071,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _constants = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -13068,64 +13083,62 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var LoadButton = function (_Component) {
-    _inherits(LoadButton, _Component);
+  _inherits(LoadButton, _Component);
 
-    function LoadButton(props) {
-        _classCallCheck(this, LoadButton);
+  function LoadButton(props) {
+    _classCallCheck(this, LoadButton);
 
-        var _this = _possibleConstructorReturn(this, (LoadButton.__proto__ || Object.getPrototypeOf(LoadButton)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (LoadButton.__proto__ || Object.getPrototypeOf(LoadButton)).call(this, props));
 
-        _this.fileReader = new FileReader();
-        _this.fileInputRef = _react2.default.createRef();
-        _this.handleFileChosen = _this.handleFileChosen.bind(_this);
-        _this.handleLoadClick = _this.handleLoadClick.bind(_this);
-        _this.handleFileRead = _this.handleFileRead.bind(_this);
-        return _this;
+    _this.fileReader = new FileReader();
+    _this.fileInputRef = _react2.default.createRef();
+    _this.handleFileChosen = _this.handleFileChosen.bind(_this);
+    _this.handleLoadClick = _this.handleLoadClick.bind(_this);
+    _this.handleFileRead = _this.handleFileRead.bind(_this);
+    return _this;
+  }
+
+  _createClass(LoadButton, [{
+    key: 'handleFileRead',
+    value: function handleFileRead() {
+      var fileContent = this.fileReader.result;
+      this.props.loadCode(fileContent);
     }
+  }, {
+    key: 'handleFileChosen',
+    value: function handleFileChosen(e) {
+      var file = e.target.files[0];
+      this.fileReader.onloadend = this.handleFileRead;
+      this.fileReader.readAsText(file);
+    }
+  }, {
+    key: 'handleLoadClick',
+    value: function handleLoadClick() {
+      this.fileInputRef.current.click();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement('input', {
+          type: 'file',
+          style: { display: 'none' },
+          ref: this.fileInputRef,
+          onChange: this.handleFileChosen,
+          accept: _constants.DUNSTON_FILE_EXTENSION
+        }),
+        _react2.default.createElement(
+          'a',
+          { className: this.props.className, onClick: this.handleLoadClick },
+          'Load'
+        )
+      );
+    }
+  }]);
 
-    _createClass(LoadButton, [{
-        key: "handleFileRead",
-        value: function handleFileRead() {
-            var fileContent = this.fileReader.result;
-            this.props.handleCodeEdit(fileContent);
-        }
-    }, {
-        key: "handleFileChosen",
-        value: function handleFileChosen(e) {
-            var file = e.target.files[0];
-            this.fileReader.onloadend = this.handleFileRead;
-            this.fileReader.readAsText(file);
-        }
-    }, {
-        key: "handleLoadClick",
-        value: function handleLoadClick() {
-            this.fileInputRef.current.click();
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            return _react2.default.createElement(
-                "div",
-                null,
-                _react2.default.createElement("input", {
-                    type: "file",
-                    style: { display: "none" },
-                    ref: this.fileInputRef,
-                    onChange: this.handleFileChosen
-                }),
-                _react2.default.createElement(
-                    "a",
-                    {
-                        className: this.props.className,
-                        onClick: this.handleLoadClick
-                    },
-                    "Load"
-                )
-            );
-        }
-    }]);
-
-    return LoadButton;
+  return LoadButton;
 }(_react.Component);
 
 exports.default = LoadButton;
@@ -13369,6 +13382,8 @@ var _react2 = _interopRequireDefault(_react);
 
 __webpack_require__(59);
 
+var _constants = __webpack_require__(2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -13386,47 +13401,50 @@ var SaveDialogueBox = function (_Component) {
     var _this = _possibleConstructorReturn(this, (SaveDialogueBox.__proto__ || Object.getPrototypeOf(SaveDialogueBox)).call(this, props));
 
     _this.props = props;
-    _this.state = { fileName: "" };
+    _this.state = { fileName: '' };
     _this.updateInputValue = _this.updateInputValue.bind(_this);
     _this.getDisplay = _this.getDisplay.bind(_this);
     return _this;
   }
 
   _createClass(SaveDialogueBox, [{
-    key: "render",
+    key: 'render',
     value: function render() {
       return _react2.default.createElement(
-        "div",
-        { className: "save-code-overlay", style: { display: this.getDisplay() } },
+        'div',
+        { className: 'save-code-overlay', style: { display: this.getDisplay() } },
         _react2.default.createElement(
-          "button",
-          { className: "save-button save-dialogue-box-close-button", onClick: this.props.toggleDisplay },
-          "x"
+          'button',
+          {
+            className: 'save-button save-dialogue-box-close-button',
+            onClick: this.props.toggleDisplay
+          },
+          'x'
         ),
-        _react2.default.createElement("input", {
-          className: "filename-input",
+        _react2.default.createElement('input', {
+          className: 'filename-input',
           value: this.state.fileName,
           onChange: this.updateInputValue
         }),
         _react2.default.createElement(
-          "a",
+          'a',
           {
-            className: "link-action",
-            download: this.state.fileName + ".txt",
-            href: "data:text/plain," + this.props.editor,
+            className: 'link-action',
+            download: this.state.fileName + _constants.DUNSTON_FILE_EXTENSION,
+            href: 'data:text/plain,' + this.props.editor,
             onClick: this.props.toggleDisplay
           },
-          "Save"
+          'Save'
         )
       );
     }
   }, {
-    key: "getDisplay",
+    key: 'getDisplay',
     value: function getDisplay() {
-      return this.props.display ? "flex" : "none";
+      return this.props.display ? 'flex' : 'none';
     }
   }, {
-    key: "updateInputValue",
+    key: 'updateInputValue',
     value: function updateInputValue(evt) {
       this.setState({
         fileName: evt.target.value
