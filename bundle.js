@@ -743,11 +743,15 @@ var _LoadButton = __webpack_require__(54);
 
 var _LoadButton2 = _interopRequireDefault(_LoadButton);
 
-var _Stack = __webpack_require__(55);
+var _Sidebar = __webpack_require__(55);
+
+var _Sidebar2 = _interopRequireDefault(_Sidebar);
+
+var _Stack = __webpack_require__(57);
 
 var _Stack2 = _interopRequireDefault(_Stack);
 
-var _SaveCodeDialogueBox = __webpack_require__(56);
+var _SaveCodeDialogueBox = __webpack_require__(58);
 
 var _SaveCodeDialogueBox2 = _interopRequireDefault(_SaveCodeDialogueBox);
 
@@ -782,6 +786,7 @@ var App = function (_Component) {
       highlightingClass: _constants.highlightingClass,
       isSidebarOpen: false,
       codeStatus: successStatus,
+      maxLinesToExecute: 100,
       isDialogueVisible: false
     };
     _this.executeCode = _this.executeCode.bind(_this);
@@ -794,6 +799,8 @@ var App = function (_Component) {
     _this.setHasChangedPropertyForChangedRows = _this.setHasChangedPropertyForChangedRows.bind(_this);
     _this.openMenu = _this.openMenu.bind(_this);
     _this.saveCurrentCode = _this.saveCurrentCode.bind(_this);
+
+    _this.maxLinesToExecuteSliderRef = _react2.default.createRef();
     _this.toggleSaveCodeDialogue = _this.toggleSaveCodeDialogue.bind(_this);
     return _this;
   }
@@ -844,6 +851,7 @@ var App = function (_Component) {
           _react2.default.createElement(
             "div",
             { className: "code-container" },
+            _react2.default.createElement(_Sidebar2.default, { className: "sidebar", isOpened: this.state.isSidebarOpen, sliderRef: this.maxLinesToExecuteSliderRef }),
             _react2.default.createElement(_EditorComp2.default, { initialCode: this.getInitialCode(), highlightLine: this.state.highlightLine,
               highlightingClass: this.state.highlightingClass, onEdit: this.handleCodeEdit }),
             _react2.default.createElement(
@@ -956,6 +964,7 @@ var App = function (_Component) {
       }).join("\n");
       var machine = this.state.machine;
       try {
+        machine.setMaxLinesToExecute(this.maxLinesToExecuteSliderRef.current.value);
         machine.load(numberedCode);
         machine.execute();
         this.setAsNotExecutingStepWise();
@@ -1145,6 +1154,10 @@ class Machine {
     this.stack = new Stack();
     this.maxLinesToExecute = maxLinesToExecute;
     this._reset();
+  }
+
+  setMaxLinesToExecute(maxLinesToExecute) {
+    this.maxLinesToExecute = maxLinesToExecute;
   }
 
   _reset() {
@@ -13134,6 +13147,122 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _SidebarItemWithSlider = __webpack_require__(56);
+
+var _SidebarItemWithSlider2 = _interopRequireDefault(_SidebarItemWithSlider);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Sidebar = function (_Component) {
+  _inherits(Sidebar, _Component);
+
+  function Sidebar() {
+    _classCallCheck(this, Sidebar);
+
+    return _possibleConstructorReturn(this, (Sidebar.__proto__ || Object.getPrototypeOf(Sidebar)).apply(this, arguments));
+  }
+
+  _createClass(Sidebar, [{
+    key: 'render',
+    value: function render() {
+      var className = this.props.className + (this.props.isOpened ? '' : ' sidebar-closed');
+      return _react2.default.createElement(
+        'div',
+        { className: className },
+        _react2.default.createElement(_SidebarItemWithSlider2.default, { title: "Max Instructions", min: 100, max: 10000, sliderRef: this.props.sliderRef })
+      );
+    }
+  }]);
+
+  return Sidebar;
+}(_react.Component);
+
+exports.default = Sidebar;
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SidebarItemWithSlider = function (_Component) {
+  _inherits(SidebarItemWithSlider, _Component);
+
+  function SidebarItemWithSlider(props) {
+    _classCallCheck(this, SidebarItemWithSlider);
+
+    return _possibleConstructorReturn(this, (SidebarItemWithSlider.__proto__ || Object.getPrototypeOf(SidebarItemWithSlider)).call(this, props));
+  }
+
+  _createClass(SidebarItemWithSlider, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'span',
+          { style: { fontSize: '16px' } },
+          this.props.title
+        ),
+        _react2.default.createElement('input', {
+          style: { width: '70%', position: 'relative', left: '15%' },
+          type: 'range',
+          min: this.props.min,
+          max: this.props.max,
+          ref: this.props.sliderRef
+        })
+      );
+    }
+  }]);
+
+  return SidebarItemWithSlider;
+}(_react.Component);
+
+exports.default = SidebarItemWithSlider;
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -13203,7 +13332,7 @@ var Stack = function (_Component) {
 exports.default = Stack;
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13219,7 +13348,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-__webpack_require__(57);
+__webpack_require__(59);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -13247,7 +13376,6 @@ var SaveDialogueBox = function (_Component) {
   _createClass(SaveDialogueBox, [{
     key: "render",
     value: function render() {
-      console.log(this.props.display);
       return _react2.default.createElement(
         "div",
         { className: "save-code-overlay", style: { display: this.getDisplay() } },
@@ -13293,7 +13421,7 @@ var SaveDialogueBox = function (_Component) {
 exports.default = SaveDialogueBox;
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

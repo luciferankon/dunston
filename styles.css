@@ -346,7 +346,8 @@ div.CodeMirror-dragcursors {
 span.CodeMirror-selectedtext { background: none; }
 .code-container {
   border-right: #434343 solid 1px;
-  border-bottom: #434343 solid 1px; }
+  border-bottom: #434343 solid 1px;
+  position: relative; }
 
 .CodeMirror {
   background: transparent;
@@ -511,6 +512,20 @@ tr {
 
 .errorLine {
   background-color: lightcoral; }
+
+.sidebar {
+  height: 100%;
+  width: 300px;
+  position: absolute;
+  z-index: 26;
+  background-color: #282828;
+  overflow-x: hidden;
+  border-right: 2px solid #bea95f;
+  transition: width 0.5s; }
+
+.sidebar-closed {
+  width: 0px;
+  border: none; }
 
 .save-code-overlay {
   height: 30%;
