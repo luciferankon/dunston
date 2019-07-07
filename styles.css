@@ -521,11 +521,24 @@ tr {
   background-color: #282828;
   overflow-x: hidden;
   border-right: 2px solid #bea95f;
-  transition: width 0.5s; }
+  transition: width 0.5s;
+  padding: 0px 10px; }
 
 .sidebar-closed {
   width: 0px;
+  padding: 0px;
   border: none; }
+
+.sidebar-item-title {
+  font-size: 18px; }
+
+.sidebar-item-slider {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px; }
+
+.sidebar-item-slider input[type="range"] {
+  width: 70%; }
 
 .save-code-overlay {
   height: 30%;

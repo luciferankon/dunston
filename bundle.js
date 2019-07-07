@@ -13216,27 +13216,46 @@ var SidebarItemWithSlider = function (_Component) {
   function SidebarItemWithSlider(props) {
     _classCallCheck(this, SidebarItemWithSlider);
 
-    return _possibleConstructorReturn(this, (SidebarItemWithSlider.__proto__ || Object.getPrototypeOf(SidebarItemWithSlider)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (SidebarItemWithSlider.__proto__ || Object.getPrototypeOf(SidebarItemWithSlider)).call(this, props));
+
+    _this.state = { sliderValue: 100 };
+    _this.handleSliderChange = _this.handleSliderChange.bind(_this);
+    return _this;
   }
 
   _createClass(SidebarItemWithSlider, [{
-    key: 'render',
+    key: "handleSliderChange",
+    value: function handleSliderChange(event) {
+      this.setState({ sliderValue: event.target.value });
+    }
+  }, {
+    key: "render",
     value: function render() {
       return _react2.default.createElement(
-        'div',
+        "div",
         null,
         _react2.default.createElement(
-          'span',
-          { style: { fontSize: '16px' } },
+          "span",
+          { className: "sidebar-item-title" },
           this.props.title
         ),
-        _react2.default.createElement('input', {
-          style: { width: '70%', position: 'relative', left: '15%' },
-          type: 'range',
-          min: this.props.min,
-          max: this.props.max,
-          ref: this.props.sliderRef
-        })
+        _react2.default.createElement(
+          "div",
+          { className: "sidebar-item-slider" },
+          _react2.default.createElement("input", {
+            type: "range",
+            min: this.props.min,
+            max: this.props.max,
+            ref: this.props.sliderRef,
+            onChange: this.handleSliderChange,
+            onInput: this.handleSliderChange
+          }),
+          _react2.default.createElement(
+            "span",
+            null,
+            this.state.sliderValue
+          )
+        )
       );
     }
   }]);
