@@ -355,6 +355,11 @@ span.CodeMirror-selectedtext { background: none; }
   color: #53759d;
   border-bottom: #434343 solid 1px; }
 
+.CodeMirror-cursor {
+  border-left: 1px solid #bea95f;
+  border-right: none;
+  width: 0; }
+
 .CodeMirror-gutter {
   background: #383838; }
 
