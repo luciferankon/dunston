@@ -798,19 +798,30 @@ var App = function (_Component) {
     _this.handleCodeEdit = _this.handleCodeEdit.bind(_this);
     _this.showStackForLine = _this.showStackForLine.bind(_this);
     _this.setHasChangedPropertyForChangedRows = _this.setHasChangedPropertyForChangedRows.bind(_this);
-    _this.openMenu = _this.openMenu.bind(_this);
+    _this.toggleMenu = _this.toggleMenu.bind(_this);
+    _this.closeSidebar = _this.closeSidebar.bind(_this);
     _this.saveCurrentCode = _this.saveCurrentCode.bind(_this);
     _this.loadCode = _this.loadCode.bind(_this);
 
     _this.maxLinesToExecuteSliderRef = _react2.default.createRef();
     _this.toggleSaveCodeDialogue = _this.toggleSaveCodeDialogue.bind(_this);
+    _this.sidbarRef = _react2.default.createRef();
     return _this;
   }
 
   _createClass(App, [{
-    key: "openMenu",
-    value: function openMenu() {
+    key: "toggleMenu",
+    value: function toggleMenu() {
       this.setState({ isSidebarOpen: !this.state.isSidebarOpen });
+    }
+  }, {
+    key: "closeSidebar",
+    value: function closeSidebar(event) {
+      if (!this.state.isSidebarOpen) return;
+      var target = event.target;
+
+      if (this.sidbarRef.current.contains(target)) return;
+      this.setState({ isSidebarOpen: false });
     }
   }, {
     key: "render",
@@ -818,7 +829,7 @@ var App = function (_Component) {
       var sidebarClassName = this.state.isSidebarOpen ? 'active' : '';
       return _react2.default.createElement(
         "div",
-        { className: "app" },
+        { className: "app", onClick: this.closeSidebar },
         _react2.default.createElement(
           "div",
           { className: "assembly-simulator-container" },
@@ -830,7 +841,7 @@ var App = function (_Component) {
               { className: "header-title-action" },
               _react2.default.createElement(
                 "span",
-                { className: "menu " + sidebarClassName, onClick: this.openMenu },
+                { className: "menu " + sidebarClassName, onClick: this.toggleMenu },
                 "..."
               ),
               _react2.default.createElement(
@@ -853,7 +864,7 @@ var App = function (_Component) {
           _react2.default.createElement(
             "div",
             { className: "code-container" },
-            _react2.default.createElement(_Sidebar2.default, { className: "sidebar", isOpened: this.state.isSidebarOpen, sliderRef: this.maxLinesToExecuteSliderRef }),
+            _react2.default.createElement(_Sidebar2.default, { sidebarRef: this.sidbarRef, className: "sidebar", isOpened: this.state.isSidebarOpen, sliderRef: this.maxLinesToExecuteSliderRef }),
             _react2.default.createElement(_EditorComp2.default, { initialCode: this.getInitialCode(), highlightLine: this.state.highlightLine,
               highlightingClass: this.state.highlightingClass, onEdit: this.handleCodeEdit }),
             _react2.default.createElement(
@@ -12980,6 +12991,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
@@ -12988,72 +13001,114 @@ var _constants = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 function getClassName(row) {
   return row.hasChanged ? _constants.highlightingClass : null;
 }
 
-var createRow = function createRow(row, headers, onClickOfRow) {
-  var cols = headers.map(function (header) {
-    return _react2.default.createElement(
-      "td",
-      { className: header.header + "Class" },
-      row[header.accessor]
-    );
-  });
-  return _react2.default.createElement(
-    "tr",
-    { className: getClassName(row), onClick: onClickOfRow.bind(null, row) },
-    cols
-  );
-};
+var TraceTable = function (_React$Component) {
+  _inherits(TraceTable, _React$Component);
 
-var createHeader = function createHeader(headers, onClickOfHeader) {
-  var cols = headers.map(function (header) {
-    return _react2.default.createElement(
-      "th",
-      { onClick: onClickOfHeader,
-        id: header.header },
-      header.header
-    );
-  });
-  return _react2.default.createElement(
-    "thead",
-    null,
-    _react2.default.createElement(
-      "tr",
-      null,
-      cols
-    )
-  );
-};
+  function TraceTable(props) {
+    _classCallCheck(this, TraceTable);
 
-exports.default = function (props) {
-  var rows = props.rows,
-      headers = props.headers,
-      onClickOfHeader = props.onClickOfHeader,
-      className = props.className,
-      onClickOfRow = props.onClickOfRow;
+    var _this = _possibleConstructorReturn(this, (TraceTable.__proto__ || Object.getPrototypeOf(TraceTable)).call(this, props));
 
-  var tableRows = rows.map(function (row) {
-    return createRow(row, headers, onClickOfRow);
-  });
-  var tableHeaders = createHeader(headers, onClickOfHeader);
+    _this.createRow = _this.createRow.bind(_this);
+    _this.tableEndRef = _react2.default.createRef();
+    return _this;
+  }
 
-  return _react2.default.createElement(
-    "div",
-    { className: "result-table" },
-    _react2.default.createElement(
-      "table",
-      { className: className },
-      tableHeaders,
-      _react2.default.createElement(
-        "tbody",
+  _createClass(TraceTable, [{
+    key: 'createRow',
+    value: function createRow(row) {
+      var cols = this.props.headers.map(function (header) {
+        return _react2.default.createElement(
+          'td',
+          { className: header.header + 'Class' },
+          row[header.accessor]
+        );
+      });
+      return _react2.default.createElement(
+        'tr',
+        { className: getClassName(row), onClick: this.props.onClickOfRow.bind(null, row) },
+        cols
+      );
+    }
+  }, {
+    key: 'createHeader',
+    value: function createHeader() {
+      var _this2 = this;
+
+      var cols = this.props.headers.map(function (header) {
+        return _react2.default.createElement(
+          'th',
+          { onClick: _this2.props.onClickOfHeader, id: header.header },
+          header.header
+        );
+      });
+      return _react2.default.createElement(
+        'thead',
         null,
-        tableRows
-      )
-    )
-  );
-};
+        _react2.default.createElement(
+          'tr',
+          null,
+          cols
+        )
+      );
+    }
+  }, {
+    key: 'scrollTableToBottom',
+    value: function scrollTableToBottom() {
+      this.tableEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.scrollTableToBottom();
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate() {
+      this.scrollTableToBottom();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _props = this.props,
+          rows = _props.rows,
+          className = _props.className;
+
+      var tableRows = rows.map(this.createRow);
+      var tableHeaders = this.createHeader();
+
+      return _react2.default.createElement(
+        'div',
+        { className: 'result-table' },
+        _react2.default.createElement(
+          'table',
+          { className: className },
+          tableHeaders,
+          _react2.default.createElement(
+            'tbody',
+            null,
+            tableRows
+          )
+        ),
+        _react2.default.createElement('div', { ref: this.tableEndRef })
+      );
+    }
+  }]);
+
+  return TraceTable;
+}(_react2.default.Component);
+
+exports.default = TraceTable;
 
 /***/ }),
 /* 54 */
@@ -13154,8 +13209,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
@@ -13166,35 +13219,14 @@ var _SidebarItemWithSlider2 = _interopRequireDefault(_SidebarItemWithSlider);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Sidebar = function (_Component) {
-  _inherits(Sidebar, _Component);
-
-  function Sidebar() {
-    _classCallCheck(this, Sidebar);
-
-    return _possibleConstructorReturn(this, (Sidebar.__proto__ || Object.getPrototypeOf(Sidebar)).apply(this, arguments));
-  }
-
-  _createClass(Sidebar, [{
-    key: 'render',
-    value: function render() {
-      var className = this.props.className + (this.props.isOpened ? '' : ' sidebar-closed');
-      return _react2.default.createElement(
-        'div',
-        { className: className },
-        _react2.default.createElement(_SidebarItemWithSlider2.default, { title: "Max Instructions", min: 100, max: 10000, sliderRef: this.props.sliderRef })
-      );
-    }
-  }]);
-
-  return Sidebar;
-}(_react.Component);
+var Sidebar = function Sidebar(props) {
+  var className = props.className + (props.isOpened ? '' : ' sidebar-closed');
+  return _react2.default.createElement(
+    'div',
+    { className: className, ref: props.sidebarRef },
+    _react2.default.createElement(_SidebarItemWithSlider2.default, { title: "Max Instructions", min: 100, max: 100000, sliderRef: props.sliderRef })
+  );
+};
 
 exports.default = Sidebar;
 
